@@ -6,6 +6,7 @@ import openai
 bot_tocken = "6354133817:AAE6nVek50btKjABewy1wmSz1-Q99bJOadU"
 openai.api_key = "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"
 
+
 bot = Bot(bot_tocken)
 dp = Dispatcher(bot=bot)
 
