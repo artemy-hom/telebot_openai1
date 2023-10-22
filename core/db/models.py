@@ -1,6 +1,9 @@
 import datetime
 from sqlalchemy import Column, Integer, String, DATE
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
+
 
 #--------
 #Не забывай коментить идиотина
@@ -13,14 +16,15 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     #Telegram unique user id 
-    user_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    user_id: Mapped[int] = mapped_column(primary_key=True)
     #Telegram user name
-    username = Column(String(length=255), nullable=True)
+    name: Mapped[str] = mapped_column(String(30))
     #Register date
-    reg_date = Column(DATE, default=datetime.date.today())
+    reg_date: Mapped[DATE] = mapped_column(DATE, default=datetime.date.today())
     #Last update date
-    up_date = Column(DATE, onupdate=datetime.date.today())
+    up_date: Mapped[DATE] = mapped_column(DATE, onupdate=datetime.date.today())
 
     #Just debug function
     def __str__(self) -> str:
         return f"<User:{self.user_id}"
+

@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine, text, URL
 from sqlalchemy.orm import sessionmaker
-#from db.models import User
+from assimilator.alchemy.database import AlchemyRepository, AlchemyUnitOfWork
+from assimilator.core.database import Repository, UnitOfWork
+from assimilator.core.services.crud import CRUDService
+from models import User
 
 url_object = URL.create(
     "postgresql",
@@ -22,9 +25,10 @@ url_object = URL.create(
 engine = create_engine(url_object)
 
 #Interactions with database
-session = sessionmaker(
+Session = sessionmaker(
     bind=engine
 )
+session = Session()
 
 
 
@@ -39,7 +43,4 @@ session = sessionmaker(
         print(str(eror))
 
 check()'''
-
-
-
 
