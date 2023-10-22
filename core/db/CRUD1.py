@@ -29,7 +29,7 @@ def read_all():
 # Изменяем данные пользователя и сохраняем изменения в базе данных
 def update():
     user_to_update = session.query(User).filter_by(name='artemy').first()
-    user_to_update.email = 'newemail@example.com'
+    user_to_update.id = 7878
     session.commit()
 
 # Удаляем пользователя из базы данных
