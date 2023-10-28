@@ -1,11 +1,9 @@
-from aiogram.filters.command import Command
 from aiogram import types
-from services.services import create, read, delete
+from aiogram.filters.command import Command
 from main import dp
+from services.services import create, delete, read
 
-
-
-'''@dp.message()
+"""@dp.message()
 async def send(message : types.Message):
     response = openai.Completion.create(
     model="text-davinci-003",
@@ -19,30 +17,31 @@ async def send(message : types.Message):
 )
 
     await message.answer(response['choices'][0]['text'])
-'''
+"""
 
-#Using this function I tested how can I get the user ID
-#NOTE ask the teacher how can i use this function
+# Using this function I tested how can I get the user ID
+# NOTE ask the teacher how can i use this function
 
 
-@dp.message(Command('start'))
-async def send_create(message : types.Message):
+@dp.message(Command("start"))
+async def send_create(message: types.Message):
     user_id = message.from_user.id
-    username = message.from_user.first_name 
+    username = message.from_user.first_name
     create(user_id, username)
-    await message.answer(f'Добавили вас в базу, {username}!')
+    await message.answer(f"Добавили вас в базу, {username}!")
 
-@dp.message(Command('delete'))
-async def send_delete(message : types.Message):
+
+@dp.message(Command("delete"))
+async def send_delete(message: types.Message):
     user_id = message.from_user.id
     delete(user_id)
-    await message.answer(f'Удаляем вас из базы.')
+    await message.answer("Удаляем вас из базы.")
 
 
-@dp.message(Command('read'))
-async def send_delete(message : types.Message):
+@dp.message(Command("read"))
+async def send_read(message: types.Message):
     user_id = message.from_user.id
     if user_id == 1691108875:
         await message.reply(str(read()))
     else:
-        await message.reply(f'У вас не доступа.')   
+        await message.reply("У вас не доступа.")

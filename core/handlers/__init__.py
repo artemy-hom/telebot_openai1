@@ -1,1 +1,1 @@
-from .handlers import dp
+from .handlers import dp  # noqa F401

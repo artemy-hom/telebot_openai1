@@ -1,6 +1,5 @@
-from sqlalchemy import create_engine, URL
+from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import sessionmaker
-
 
 url_object = URL.create(
     "postgresql",
@@ -12,25 +11,22 @@ url_object = URL.create(
 
 # engine = create_engine("postgresql://postgres:atemy278@localhost:5432/db")
 
-#--------
-#Не забывай коментить идиотина
-#А то потом опять забудешь зачем всё это делал 💀💀💀
-#--------
+# --------
+# Не забывай коментить идиотина
+# А то потом опять забудешь зачем всё это делал 💀💀💀
+# --------
 
 
-#Database access
+# Database access
 engine = create_engine(url_object)
 
-#Interactions with database
-Session = sessionmaker(
-    bind=engine
-)
+# Interactions with database
+Session = sessionmaker(bind=engine)
 session = Session()
 
 
-
-#This function was created for connection testing
-'''def check():
+# This function was created for connection testing
+"""def check():
     client = session()
     try:
         result = client.execute(text('select 1'))
@@ -39,6 +35,4 @@ session = Session()
     except Exception as eror:
         print(str(eror))
 
-check()'''
-
-
+check()"""

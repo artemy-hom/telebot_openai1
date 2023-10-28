@@ -1,16 +1,14 @@
-from aiogram import Bot, Dispatcher
 import asyncio
+
 import openai
+from aiogram import Bot, Dispatcher
 
+# --------
+# Не забывай коментить идиотина
+# А то потом опять забудешь зачем всё это делал 💀💀💀
+# --------
 
-
-
-#--------
-#Не забывай коментить идиотина
-#А то потом опять забудешь зачем всё это делал 💀💀💀
-#--------
-
-#Bot & openai tockens
+# Bot & openai tockens
 bot_tocken = "6354133817:AAE6nVek50btKjABewy1wmSz1-Q99bJOadU"
 openai.api_key = "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"
 
@@ -21,6 +19,7 @@ dp = Dispatcher(bot=bot)
 
 async def main():
     from handlers import dp
+
     await dp.start_polling(bot)
 
 
