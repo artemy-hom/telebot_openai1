@@ -18,7 +18,7 @@ class User(Base):
     #Telegram unique user id 
     user_id: Mapped[int] = mapped_column(primary_key=True)
     #Telegram user name
-    name: Mapped[str] = mapped_column(String(30))
+    username: Mapped[str] = mapped_column(String(30))
     #Register date
     reg_date: Mapped[DATE] = mapped_column(DATE, default=datetime.date.today())
     #Last update date
