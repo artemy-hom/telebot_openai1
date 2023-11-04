@@ -19,8 +19,12 @@ dp = Dispatcher(bot=bot)
 
 async def main():
     from handlers import dp
-
+    from handlers.handlers import router
+    dp.include_router(router)
     await dp.start_polling(bot)
+
+
+
 
 
 if __name__ == "__main__":
