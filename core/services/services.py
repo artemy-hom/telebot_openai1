@@ -33,3 +33,7 @@ def delete(user_id):
     delete_obj = session.query(User).filter_by(user_id=user_id).one()
     session.delete(delete_obj)
     session.commit()
+
+def id_finder(an_user_id):
+    parts = session.query(User).filter(User.user_id==an_user_id).first()
+    return parts
