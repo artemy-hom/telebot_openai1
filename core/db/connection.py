@@ -24,7 +24,6 @@ engine = create_engine(url_object)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-
 # This function was created for connection testing
 """def check():
     client = session()
