@@ -1,9 +1,14 @@
 import openai
+import string
+import random
+import datetime
 from aiogram import types, Router, F
 from aiogram.filters.command import Command
 from main import dp
 from services.services import create, delete, read, id_finder
 from keyboards.keyboard import get_keyboard
+from keyboards.inline_kb import get_p2p_keyboard
+from services.services import get_user, get_order, create_payment, create_order
 
 
 router  = Router()
@@ -48,38 +53,50 @@ async def send_read(message: types.Message):
     else:
         await message.reply("У вас не доступа.")
 
-@router.message()
-async def send(message : types.Message):
-    command_list = ["/start",
-                    "/register",
-                    "/info",
-                    "/commands",
-                    "/read",
-                    "/delete"
-                    ]
-    
-
-    an_user_id = message.from_user.id
-    id_finder(an_user_id = an_user_id)
-
-    try:
-        index_commands = command_list.index(message.text)
-    except:
-        if id_finder(an_user_id) != None:
-            response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=message.text,
-            temperature=0.9,
-            max_tokens=1000,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.6,
-            stop=["You:"]
+@router.message(Command("extend"))
+async def p2p_handler(message: types.Message):
+    user = get_user(message.chat.id)
+    order = get_order(user[0].id)
+    if order and order.status != "PAID":
+        await message.answer("Заказ уже создан")
+    else:
+        letters_and_digits = string.ascii_lowercase + string.digits
+        rand_string = "".join(random.sample(letters_and_digits,10))
+        quickpay =create_payment(rand_string)
+        print(quickpay)
+        create_order(rand_string, user[0].id)
+        p2p_keyboard = get_p2p_keyboard(quickpay.redirected_url)
+        await message.answer(
+            text= 'Преобрести подписку можно по кнопке ниже.',
+            reply_markup= p2p_keyboard,
         )
 
-            await message.answer(response['choices'][0]['text'])
-        else:
-            await message.answer("Зарегестрируйтесь командой\n/register")
+
+
+
+
+@router.message()
+async def send(message : types.Message):
+    user_date = get_user(message.chat.id)
+    now = datetime.date.today()
+    if now > user_date[0].up_date:
+        await message.answer('Купите подписку')
+        return
+    if user_date != None:
+        response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=message.text,
+        temperature=0.9,
+        max_tokens=1000,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.6,
+        stop=["You:"]
+        )
+
+        await message.answer(response['choices'][0]['text'])
+    else:
+        await message.answer("Зарегестрируйтесь командой\n/register")
 
 
 # Using this function I tested how can I get the user ID
