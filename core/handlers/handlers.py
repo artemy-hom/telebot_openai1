@@ -2,10 +2,11 @@ import openai
 import string
 import random
 import datetime
+import replace
 from aiogram import types, Router, F
 from aiogram.filters.command import Command
-from main import dp
-from services.services import create, delete, read, id_finder
+from main import dp, bot
+from services.services import create, delete, read, id_finder, get_all_user_id
 from keyboards.keyboard import get_keyboard
 from keyboards.inline_kb import get_p2p_keyboard
 from services.services import get_user, get_order, create_payment, create_order
@@ -15,35 +16,59 @@ router  = Router()
 
 @router.message(Command("start"))
 async def start(message: types.Message):
-    username = message.from_user.first_name
-    await message.answer(f"Здравствуйте, {username}!\nЭтот бот умеет отвечать на любые ваши вопросы с помощью нейросетки\nдля получение листа команд воспользуйтесь коммандой\n/commands")
+    try:
+        user_id = message.from_user.id
+        username = message.from_user.first_name
+        create(user_id, username)
+        await message.answer(f"Здравствуйте, {username}!\nЭтот бот умеет отвечать на любые ваши вопросы с помощью нейросетки.\nТакже у вас есть пробный период до 00:00 завтрашнего дня.\nДля получение листа команд воспользуйтесь коммандой\n/commands")
+    except:
+        await message.answer(f"Здравствуйте, {username}!\nЭтот бот умеет отвечать на любые ваши вопросы с помощью нейросетки.\nТакже у вас есть пробный период до 00:00 завтрашнего дня.\nдля получение листа команд воспользуйтесь коммандой\n/commands")
+
+
+
+@router.message(Command("update"))
+async def start(message: types.Message):
+    access = message.from_user.id
+    if access == 1691108875:
+        try:
+            message_text = message.text
+            text_for_update = replace.replace(message_text, {"/update": "Update!\n"})
+            text_for_update = text_for_update.replace(" ","",1)
+
+            all_user_id = get_all_user_id()
+
+            for user_id in all_user_id:
+                user_id = replace.replace(str(user_id), {"(":"", ")":"", ",":""})
+                await bot.send_message(chat_id=int(user_id),text=text_for_update)
+
+        except Exception as ex:
+            print(ex)
+            await message.answer("err")
+    else:
+        await message.answer("У вас нет доступа.")
 
 
 @router.message(Command("commands"))
 async def start(message: types.Message):
-    await message.answer("Вот!",reply_markup=get_keyboard())
+    try:
+        access = message.from_user.id
+        await message.answer("Вот!",reply_markup=get_keyboard(access=access))
+    except:
+        print('err')
 
 
 @router.message(Command("info"))
 async def send_create(message: types.Message):
 
-    await message.answer("Для использования этого бота, необходимо зарегестрироваться командой /register")
+    await message.answer("Этот бот отвечает на любые ваши вопросы, но для его использования необходимо оформить подписку.\nСоздать заказ можно коммандой\n/extend")
 
 
-@router.message(Command("register"))
+'''@router.message(Command("register"))
 async def send_create(message: types.Message):
     user_id = message.from_user.id
     username = message.from_user.first_name
     create(user_id, username)
-    await message.answer(f"Добавили вас в базу, {username}!")
-
-
-@router.message(Command("delete"))
-async def send_delete(message: types.Message):
-    user_id = message.from_user.id
-    delete(user_id)
-    await message.answer("Удаляем вас из базы.")
-
+    await message.answer(f"Добавили вас в базу, {username}!")'''
 
 @router.message(Command("read"))
 async def send_read(message: types.Message):
@@ -79,10 +104,10 @@ async def p2p_handler(message: types.Message):
 async def send(message : types.Message):
     user_date = get_user(message.chat.id)
     now = datetime.date.today()
-    if now > user_date[0].up_date:
+    if (user_date == None) or (now > user_date[0].up_date):
         await message.answer('Купите подписку')
         return
-    if user_date != None:
+    elif user_date != None:
         response = openai.Completion.create(
         model="text-davinci-003",
         prompt=message.text,
