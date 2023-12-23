@@ -83,6 +83,11 @@ def plus_month(user):
     session.refresh(user)
     return user
 
+def get_all_user_id():
+    all_user_id = session.query(User.user_id).all()
+    return all_user_id
+
+
 def create_payment(rand_string):
     quickpay = Quickpay(
         receiver="4100118429702668",
