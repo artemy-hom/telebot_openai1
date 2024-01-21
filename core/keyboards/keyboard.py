@@ -3,16 +3,15 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 def get_keyboard(access):
     if access == 1691108875:
                 kb = [
-            [KeyboardButton(text="/extend")],
+            [KeyboardButton(text="/subscribe")],
             [KeyboardButton(text="/info")],
-            [KeyboardButton(text="/read")],
-            [KeyboardButton(text="/update")]
+            [KeyboardButton(text="/read")]
         ]
         
 
     else:
         kb = [
-            [KeyboardButton(text="/extend")],
+            [KeyboardButton(text="/subscribe")],
             [KeyboardButton(text="/info")]
         ]
 
