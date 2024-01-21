@@ -5,12 +5,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.types import BigInteger
 
-
-# --------
-# Не забывай коментить идиотина
-# А то потом опять забудешь зачем всё это делал 💀💀💀
-# --------
-
 Base = declarative_base()
 
 

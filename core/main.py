@@ -2,15 +2,12 @@ import asyncio
 
 import openai
 from aiogram import Bot, Dispatcher
+from tockens import openai_tocken
 
-# --------
-# Не забывай коментить идиотина
-# А то потом опять забудешь зачем всё это делал 💀💀💀
-# --------
 
 # Bot & openai tockens
 bot_tocken = "6354133817:AAE6nVek50btKjABewy1wmSz1-Q99bJOadU"
-openai.api_key = "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"
+openai.api_key = openai_tocken
 
 
 bot = Bot(bot_tocken)

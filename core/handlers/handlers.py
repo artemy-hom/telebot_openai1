@@ -38,8 +38,8 @@ async def start(message: types.Message):
             all_user_id = get_all_user_id()
 
             for user_id in all_user_id:
-                user_id = replace.replace(str(user_id), {"(":"", ")":"", ",":""})
-                await bot.send_message(chat_id=int(user_id),text=text_for_update)
+                await bot.send_message(chat_id=user_id[0],text=text_for_update)
+
 
         except Exception as ex:
             print(ex)
@@ -78,7 +78,7 @@ async def send_read(message: types.Message):
     else:
         await message.reply("У вас не доступа.")
 
-@router.message(Command("extend"))
+@router.message(Command("subscribe"))
 async def p2p_handler(message: types.Message):
     user = get_user(message.chat.id)
     order = get_order(user[0].id)
