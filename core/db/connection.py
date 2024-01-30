@@ -5,9 +5,9 @@ url_object = URL.create(
     "postgresql",
     username="postgres",
     password="artmy278",  # plain (unescaped) text
-    host="db",
+    host="127.0.0.1",
     database="db",
-    port=8001
+    port=5432
 )
 
 # engine = create_engine("postgresql://postgres:atemy278@db:8101/db")
